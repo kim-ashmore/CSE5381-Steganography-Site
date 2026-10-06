@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Gallery{% endblock %}
+{% block content %}
+<h2>Public gallery</h2>
+<p style="text-align:center">Anyone can view these posts. Log in to download or extract.</p>
+
+{% if records %}
+  <div class="gallery-grid">
+    {% for record in records %}
+      <div class="gallery-item">
+        <a class="thumb" href="{{ url_for('photo_detail', record_id=record['id']) }}">
+          <span class="placeholder">{{ record['output_filename'].rsplit('.', 1)[-1] | lower if '.' in record['output_filename'] else 'file' }} file</span>
+          {% if record['preview_filename'] %}
+            <img src="{{ url_for('preview_image', filename=record['preview_filename']) }}"
+                 alt="Preview of {{ record['original_filename'] }}" loading="lazy"
+                 onerror="this.remove()">
+          {% elif g.user and record['output_filename'] | is_image %}
+            <img src="{{ url_for('stego_image', filename=record['output_filename']) }}"
+                 alt="Stego file made from {{ record['original_filename'] }}" loading="lazy"
+                 onerror="this.remove()">
+          {% endif %}
+        </a>
+        <div class="info">
+          <strong>{{ record['original_filename'] }}</strong>
+          <small>
+            {% if record['username'] %}by {{ record['username'] }} &middot; {% endif %}{{ record['created_at'] }}
+          </small>
+        </div>
+        <div class="links">
+          <a href="{{ url_for('photo_detail', record_id=record['id']) }}">Details</a>
+          {% if g.user %}
+            <a href="{{ url_for('download', filename=record['output_filename']) }}">Download</a>
+          {% else %}
+            <a href="{{ url_for('login', next=url_for('gallery')) }}">Log in to download</a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty">
+    <p>Nothing posted yet.</p>
+    {% if g.user %}
+      <p><a href="{{ url_for('upload') }}"><button type="button">Create a stego file</button></a></p>
+    {% else %}
+      <p><a href="{{ url_for('login') }}">Log in</a> to create one.</p>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% if g.user %}
+  <p style="text-align:center"><a href="{{ url_for('dashboard') }}">&laquo; back to dashboard</a></p>
+{% endif %}
+{% endblock %}

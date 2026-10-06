@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h2>{{ record['original_filename'] }}</h2>
+
+<div class="detail">
+  <div class="preview">
+    {% if record['preview_filename'] %}
+      <img src="{{ url_for('preview_image', filename=record['preview_filename']) }}"
+           alt="Preview of {{ record['original_filename'] }}">
+    {% elif g.user and record['output_filename'] | is_image %}
+      <img src="{{ url_for('stego_image', filename=record['output_filename']) }}"
+           alt="Stego file made from {{ record['original_filename'] }}"
+           onerror="this.insertAdjacentHTML('afterend','<p>This image can no longer be displayed because embedding altered its compressed data. The stego file can still be downloaded and extracted.</p>'); this.remove()">
+    {% else %}
+      <p>No preview available for this file.</p>
+    {% endif %}
+  </div>
+
+  <div>
+    <dl>
+      <dt>Carrier file</dt>
+      <dd>{{ record['original_filename'] }}</dd>
+
+      {% if record['username'] %}
+        <dt>Posted by</dt>
+        <dd>{{ record['username'] }}</dd>
+      {% endif %}
+
+      <dt>Created</dt>
+      <dd>{{ record['created_at'] }}</dd>
+
+      {# S / L / mode are the extraction key: owner only #}
+      {% if is_owner %}
+        <dt>Hidden file</dt>
+        <dd>{{ record['message_filename'] }}</dd>
+
+        <dt>Start bit (S)</dt>
+        <dd>{{ record['start_bit'] }}</dd>
+
+        <dt>Mode (C)</dt>
+        <dd>{{ record['mode'] }}</dd>
+
+        {% if record['mode'] == 'cycle' %}
+          <dt>Cycle values</dt>
+          <dd>{{ record['cycle_values'] }}</dd>
+        {% else %}
+          <dt>Period (L)</dt>
+          <dd>{{ record['period'] }}</dd>
+        {% endif %}
+      {% endif %}
+    </dl>
+
+    <div class="actions">
+      {% if g.user %}
+        <a href="{{ url_for('download', filename=record['output_filename']) }}"><button type="button">Download stego file</button></a>
+      {% else %}
+        <p class="hint"><a href="{{ url_for('login', next=request.path) }}">Log in</a> to download the stego file.</p>
+      {% endif %}
+
+      {% if is_owner %}
+        <form method="post" action="{{ url_for('extract', record_id=record['id']) }}">
+          <button type="submit">Extract hidden message</button>
+        </form>
+        <form method="post" action="{{ url_for('delete_photo', record_id=record['id']) }}"
+              onsubmit="return confirm('Delete this stego file?');">
+          <button type="submit" class="danger">Delete</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<p style="text-align:center"><a href="{{ url_for('gallery') }}">&laquo; back to gallery</a></p>
+{% endblock %}

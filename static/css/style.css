@@ -1,0 +1,149 @@
+/* style.css - the only stylesheet; linked once from templates/base.html */
+
+:root {
+  --bg: #f5f3ff;          /* very light lavender page background */
+  --card: #ffffff;
+  --text: #1e1b2e;
+  --muted: #6b6485;
+  --accent: #6d28d9;      /* main purple */
+  --accent-dark: #4c1d95; /* deep purple for hovers and headings */
+  --accent-light: #ede9fe;
+  --border: #ddd6fe;
+  --danger: #b91c1c;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3rem;
+  line-height: 1.5;
+}
+
+/* headers: centered, deep purple */
+h1, h2, h3, h4 { text-align: center; color: var(--accent-dark); }
+h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+h1 a { color: var(--accent-dark); text-decoration: none; }
+h2 { margin-top: 1.5rem; }
+h3 { margin-top: 1.25rem; color: var(--accent); }
+a { color: var(--accent); }
+a:hover { color: var(--accent-dark); }
+hr { border: none; border-top: 2px solid var(--border); margin: 1rem 0; }
+
+/* top navigation + flash messages (classes set in base.html) */
+nav { text-align: center; color: var(--muted); }
+.flash {
+  list-style: none;
+  padding: 0.6rem 1rem;
+  background: var(--accent-light);
+  border-left: 4px solid var(--accent);
+  border-radius: 4px;
+  color: var(--accent-dark);
+}
+.flash li { margin: 0.2rem 0; }
+/* login and status*/
+/*p {text-align: right} */
+/* forms */
+form {
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  box-shadow: 0 1px 3px rgba(76, 29, 149, 0.08);
+}
+input[type="text"], input[type="password"], input[type="number"], select, textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  background: #fff;
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+input[type="radio"], input[type="checkbox"] { margin-right: 0.35rem; accent-color: var(--accent); }
+textarea { font-family: ui-monospace, Menlo, Consolas, monospace; }
+label { font-weight: 500; }
+small { color: var(--muted); }
+
+/* buttons */
+button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.1rem;
+  font: inherit;
+  cursor: pointer;
+}
+button:hover { background: var(--accent-dark); }
+
+/* forms inside tables (the delete buttons) */
+td form { background: none; border: none; box-shadow: none; padding: 0; margin: 0; }
+td button { background: var(--danger); padding: 0.25rem 0.6rem; }
+td button:hover { background: #7f1d1d; }
+
+/* tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  margin: 1rem 0;
+  box-shadow: 0 1px 3px rgba(76, 29, 149, 0.08);
+}
+th, td { border: 1px solid var(--border); padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
+th { background: var(--accent-dark); color: #fff; }
+tr:nth-child(even) td { background: #faf8ff; }
+
+/* click-to-reveal cells and code */
+details summary { cursor: pointer; color: var(--accent); font-weight: 500; }
+pre, code {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre { background: var(--accent-light); padding: 0.6rem; border-radius: 6px; max-height: 20rem; overflow: auto; }
+code { background: var(--accent-light); padding: 0.1rem 0.3rem; border-radius: 4px; }
+
+/* ===== additions: flash categories, gallery, detail, misc ===== */
+.flash.error { background: #fee2e2; border-left-color: var(--danger); color: #7f1d1d; }
+.flash.success { background: #dcfce7; border-left-color: #15803d; color: #14532d; }
+
+.userbar { text-align: right; font-size: 0.9rem; color: var(--muted); margin: 0; }
+
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+.gallery-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 1px 3px rgba(76, 29, 149, 0.08); }
+.gallery-item .thumb { display: block; aspect-ratio: 4 / 3; background: var(--accent-light); position: relative; }
+.gallery-item .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; }
+.gallery-item .placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.9rem; text-align: center; padding: 0.5rem; }
+.gallery-item .info { padding: 0.6rem 0.8rem 0.2rem; font-size: 0.9rem; }
+.gallery-item .info strong { display: block; overflow-wrap: anywhere; }
+.gallery-item .links { padding: 0.2rem 0.8rem 0.7rem; font-size: 0.9rem; display: flex; gap: 0.9rem; margin-top: auto; }
+.empty { text-align: center; padding: 2rem 0; color: var(--muted); }
+
+.detail { display: grid; grid-template-columns: minmax(0, 3fr) minmax(14rem, 2fr); gap: 1.5rem; align-items: start; margin-top: 1rem; }
+@media (max-width: 700px) { .detail { grid-template-columns: 1fr; } }
+.detail .preview { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem; text-align: center; position: relative; min-height: 8rem; }
+.detail .preview img { max-width: 100%; height: auto; position: relative; }
+.detail dl { margin: 0 0 1rem; }
+.detail dt { font-weight: 600; color: var(--accent-dark); margin-top: 0.6rem; }
+.detail dd { margin: 0; overflow-wrap: anywhere; }
+.detail .actions { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+.detail .actions form { background: none; border: none; box-shadow: none; padding: 0; margin: 0; }
+button.danger { background: var(--danger); }
+button.danger:hover { background: #7f1d1d; }
+
+.field { text-align: left; margin-top: 0.9rem; }
+.field label { display: block; margin-bottom: 0.2rem; }
+.hint { color: var(--muted); font-size: 0.85rem; margin: 0.2rem 0 0; }
+.narrow { max-width: 30rem; margin-left: auto; margin-right: auto; }
+[hidden] { display: none !important; }

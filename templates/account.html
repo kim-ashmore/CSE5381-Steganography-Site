@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Account{% endblock %}
+{% block content %}
+<h2>Account</h2>
+<p style="text-align:center">Username: <strong>{{ g.user['username'] }}</strong><br>
+<small>Member since {{ g.user['created_at'] }}</small></p>
+
+<h3>Change password</h3>
+<form method="post" class="narrow">
+  <input type="hidden" name="action" value="change_password">
+  <div class="field">
+    <label for="current_password">Current password</label>
+    <input type="password" id="current_password" name="current_password" required autocomplete="current-password">
+  </div>
+  <div class="field">
+    <label for="new_password">New password</label>
+    <input type="password" id="new_password" name="new_password" required autocomplete="new-password">
+  </div>
+  <div class="field">
+    <label for="confirm_new_password">Confirm new password</label>
+    <input type="password" id="confirm_new_password" name="confirm_new_password" required autocomplete="new-password">
+  </div>
+  <p><button type="submit">Update password</button></p>
+</form>
+
+<h3>Delete account</h3>
+<form method="post" class="narrow">
+  <input type="hidden" name="action" value="delete_account">
+  <p>This permanently deletes your account, your files and your gallery posts.</p>
+  <div class="field">
+    <label for="confirm_username">Type your username to confirm</label>
+    <input type="text" id="confirm_username" name="confirm_username" required autocomplete="off">
+  </div>
+  <p><button type="submit" class="danger">Delete my account</button></p>
+</form>
+{% endblock %}

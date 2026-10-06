@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Steganography App{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  {% if g.user %}
+    <p class="userbar">
+      Logged in as <strong>{{ g.user['username'] }}</strong> |
+      <a href="{{ url_for('logout') }}">Log out</a>
+    </p>
+  {% endif %}
+
+  <h1><a href="{{ url_for('dashboard') if g.user else url_for('login') }}">Kim's Security App</a></h1>
+
+  <nav>
+    | <a href="{{ url_for('gallery') }}">Gallery</a> |
+    {% if g.user %}
+      <a href="{{ url_for('dashboard') }}">Dashboard</a> |
+      <a href="{{ url_for('upload') }}">Create</a> |
+      <a href="{{ url_for('files_list') }}">My files</a> |
+      <a href="{{ url_for('account') }}">Account</a> |
+    {% else %}
+      <a href="{{ url_for('login') }}">Log in</a> |
+      <a href="{{ url_for('register') }}">Register</a> |
+    {% endif %}
+  </nav>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flash">
+      {% for category, message in messages %}
+        <li class="{{ category }}"><strong>{{ message }}</strong></li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <hr>
+
+  {% block content %}{% endblock %}
+
+</body>
+</html>

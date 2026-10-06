@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<h2>Create an account</h2>
+<form method="post" class="narrow">
+  <div class="field">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required autofocus autocomplete="username">
+  </div>
+  <div class="field">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required autocomplete="new-password">
+  </div>
+  <div class="field">
+    <label for="confirm_password">Confirm password</label>
+    <input type="password" id="confirm_password" name="confirm_password" required autocomplete="new-password">
+  </div>
+  <div class="field">
+    <label for="security_question">Security question <small>(optional)</small></label>
+    <input type="text" id="security_question" name="security_question">
+  </div>
+  <div class="field">
+    <label for="security_answer">Security answer <small>(optional)</small></label>
+    <input type="password" id="security_answer" name="security_answer">
+  </div>
+  <p><button type="submit">Create account</button></p>
+</form>
+<p style="text-align:center">Already registered? <a href="{{ url_for('login') }}">Log in</a></p>
+{% endblock %}

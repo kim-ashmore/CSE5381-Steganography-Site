@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Public key{% endblock %}
+{% block content %}
+<h2>{{ key['label'] }}</h2>
+<p style="text-align:center"><small>{{ key['algorithm'] }} &middot; {{ key['key_kind'] }}</small></p>
+<pre>{{ pem_text }}</pre>
+<p style="text-align:center"><a href="{{ url_for('dashboard') }}">&laquo; back to dashboard</a></p>
+{% endblock %}

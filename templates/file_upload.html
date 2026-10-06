@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Create Stego File{% endblock %}
+{% block content %}
+<h2>Create a stego file</h2>
+<p style="text-align:center">Hide a message file inside a carrier file. Your S, L and mode settings are the key to extracting it, and only you can see them.</p>
+
+<form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data" class="narrow">
+
+  <div class="field">
+    <label for="carrier">Carrier file</label>
+    <input type="file" id="carrier" name="carrier" required>
+  </div>
+
+  <div class="field">
+    <label for="message">Message file</label>
+    <input type="file" id="message" name="message" required>
+    <p class="hint">The file to hide. It must fit in the carrier.</p>
+  </div>
+
+  <div class="field">
+    <label for="start_bit">Start bit (S)</label>
+    <input type="number" id="start_bit" name="start_bit" value="1024" min="0" required>
+    <p class="hint"> starting Bit position .</p>
+  </div>
+
+  <div class="field">
+    <label for="mode">Mode (C)</label>
+    <select id="mode" name="mode">
+      <option value="fixed" selected>Fixed - same gap every time</option>
+      <option value="cycle">Cycle - repeat a list of gaps</option>
+    </select>
+  </div>
+
+  <div class="field" id="fixed-group">
+    <label for="period">Period (L)</label>
+    <input type="number" id="period" name="period" value="8" min="1" required>
+    <p class="hint">Number of bits between each replaced bit.</p>
+  </div>
+
+  <div class="field" id="cycle-group" hidden>
+    <label for="cycle_values">Cycle values</label>
+    <input type="text" id="cycle_values" name="cycle_values" placeholder="8,16,28,8"
+           pattern="\s*\d+(\s*,\s*\d+)*\s*">
+    <p class="hint">r example 8,16,28,8.</p>
+  </div>
+
+  <p><button type="submit">Create stego file</button></p>
+</form>
+
+<p style="text-align:center"><a href="{{ url_for('gallery') }}">&laquo; back to gallery</a></p>
+
+<script>
+  (function () {
+    var mode = document.getElementById('mode');
+    var fixedGroup = document.getElementById('fixed-group');
+    var cycleGroup = document.getElementById('cycle-group');
+    var period = document.getElementById('period');
+    var cycle = document.getElementById('cycle_values');
+
+    function sync() {
+      var isCycle = mode.value === 'cycle';
+      cycleGroup.hidden = !isCycle;
+      fixedGroup.hidden = isCycle;
+      cycle.required = isCycle;
+      period.required = !isCycle;
+    }
+    mode.addEventListener('change', sync);
+    sync();
+  })();
+</script>
+{% endblock %}

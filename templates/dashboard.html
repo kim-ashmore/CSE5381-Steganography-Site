@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2>Welcome, {{ g.user['username'] }}</h2>
+
+<p style="text-align:center">
+  <a href="{{ url_for('upload') }}"><button type="button">Create a stego file</button></a>
+</p>
+
+<h3>Your stego files</h3>
+{% if my_posts %}
+  <table>
+    <tr><th>Carrier</th><th>Hidden file</th><th>Created</th><th></th></tr>
+    {% for p in my_posts %}
+      <tr>
+        <td>{{ p['original_filename'] }}</td>
+        <td>{{ p['message_filename'] }}</td>
+        <td>{{ p['created_at'] }}</td>
+        <td><a href="{{ url_for('photo_detail', record_id=p['id']) }}">Open</a></td>
+      </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p class="empty">You haven't created any stego files yet.</p>
+{% endif %}
+
+<p style="text-align:center">
+  <a href="{{ url_for('gallery') }}">Public gallery</a> |
+  <a href="{{ url_for('files_list') }}">My files</a> |
+  <a href="{{ url_for('account') }}">Account settings</a>
+</p>
+{% endblock %}
